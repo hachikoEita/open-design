@@ -2606,11 +2606,11 @@ async function testAgentConnectionInternal(
             : {}),
         },
       );
-      // Connection tests should validate the adapter's core CLI path, not
-      // fail on unrelated user-installed OpenCode plugins. `opencode run
-      // --pure` keeps the smoke test isolated while regular chat runs retain
-      // the user's full plugin environment.
-      if ((input.agentId === 'opencode' || input.agentId === 'mimo') && !args.includes('--pure')) {
+      // MiMo still exposes `run --pure`: the smoke test validates the
+      // adapter's core CLI path instead of unrelated user-installed plugins.
+      // OpenCode 2.x removed that flag — its probe is isolated by the scratch
+      // git cwd plus OPENCODE_DISABLE_PROJECT_CONFIG from the runtime env.
+      if (input.agentId === 'mimo' && !args.includes('--pure')) {
         args.push('--pure');
       }
       if ((input.agentId === 'opencode' || input.agentId === 'mimo') && !args.includes('--title')) {
